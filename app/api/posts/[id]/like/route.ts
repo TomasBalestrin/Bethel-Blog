@@ -1,6 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { z } from 'zod'
 
+import {
+  getIdentifier,
+  rateLimit,
+  tooManyRequestsResponse,
+} from '@/lib/rate-limit'
 import { createClient } from '@/lib/supabase/server'
 import { getClientIp, hashIdentifier } from '@/lib/utils/hash'
 
@@ -33,6 +38,9 @@ async function fetchLikesCount(
 export async function POST(request: NextRequest, context: RouteContext) {
   try {
     const { id } = await context.params
+
+    const rl = await rateLimit('like', getIdentifier(request))
+    if (!rl.success) return tooManyRequestsResponse(rl.retryAfter)
 
     const body = await request.json().catch(() => null)
     const parsed = LikeSchema.safeParse(body)
@@ -79,6 +87,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
 export async function DELETE(request: NextRequest, context: RouteContext) {
   try {
     const { id } = await context.params
+
+    const rl = await rateLimit('like', getIdentifier(request))
+    if (!rl.success) return tooManyRequestsResponse(rl.retryAfter)
 
     const body = await request.json().catch(() => null)
     const parsed = LikeSchema.safeParse(body)

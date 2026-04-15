@@ -9,6 +9,11 @@ import {
   IMAGE_VARIANTS,
   MAX_UPLOAD_BYTES,
 } from '@/lib/image/variants'
+import {
+  getIdentifier,
+  rateLimit,
+  tooManyRequestsResponse,
+} from '@/lib/rate-limit'
 import { supabaseAdmin } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
@@ -24,6 +29,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const rl = await rateLimit('upload', getIdentifier(request, user.id))
+    if (!rl.success) return tooManyRequestsResponse(rl.retryAfter)
 
     // 2. Parse multipart
     const formData = await request.formData()

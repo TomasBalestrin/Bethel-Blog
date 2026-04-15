@@ -2,6 +2,11 @@ import { randomUUID } from 'node:crypto'
 
 import { NextResponse, type NextRequest } from 'next/server'
 
+import {
+  getIdentifier,
+  rateLimit,
+  tooManyRequestsResponse,
+} from '@/lib/rate-limit'
 import { createClient } from '@/lib/supabase/server'
 import { hashIdentifier } from '@/lib/utils/hash'
 
@@ -15,6 +20,9 @@ interface RouteContext {
 export async function POST(request: NextRequest, context: RouteContext) {
   try {
     const { id } = await context.params
+
+    const rl = await rateLimit('view', getIdentifier(request))
+    if (!rl.success) return tooManyRequestsResponse(rl.retryAfter)
 
     const salt = process.env.LIKE_HASH_SALT
     if (!salt) {

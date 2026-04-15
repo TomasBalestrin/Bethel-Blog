@@ -1,5 +1,10 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
+import {
+  getIdentifier,
+  rateLimit,
+  tooManyRequestsResponse,
+} from '@/lib/rate-limit'
 import { createClient } from '@/lib/supabase/server'
 
 export const revalidate = 60
@@ -8,6 +13,9 @@ const MAX_LIMIT = 20
 
 export async function GET(request: NextRequest) {
   try {
+    const rl = await rateLimit('search', getIdentifier(request))
+    if (!rl.success) return tooManyRequestsResponse(rl.retryAfter)
+
     const { searchParams } = new URL(request.url)
     const q = searchParams.get('q')?.trim()
     const limit = Math.min(
