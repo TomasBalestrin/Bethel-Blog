@@ -1,9 +1,10 @@
 /**
- * Supabase generated types (manualmente escrito — regenerar quando
- * PROJECT_ID estiver disponível:
+ * Supabase generated types (hand-written — regenerar quando
+ * PROJECT_ID + SUPABASE_ACCESS_TOKEN estiverem disponíveis:
  *   npx supabase gen types typescript --project-id $PROJECT_ID > types/database.ts
  *
  * Reflete supabase/migrations/0001_initial.sql (schema.md §2).
+ * Estrutura seguindo exatamente o formato oficial do supabase gen types v2.
  */
 
 export type Json =
@@ -16,7 +17,10 @@ export type Json =
 
 export type PostStatus = 'draft' | 'scheduled' | 'published' | 'archived'
 
-export interface Database {
+export type Database = {
+  __InternalSupabase: {
+    PostgrestVersion: '12'
+  }
   public: {
     Tables: {
       profile: {
@@ -50,15 +54,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'profile_id_fkey'
-            columns: ['id']
-            isOneToOne: true
-            referencedRelation: 'users'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       categories: {
         Row: {
@@ -154,15 +150,7 @@ export interface Database {
           updated_at?: string
           deleted_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'posts_author_id_fkey'
-            columns: ['author_id']
-            isOneToOne: false
-            referencedRelation: 'profile'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       post_categories: {
         Row: {
@@ -180,22 +168,7 @@ export interface Database {
           category_id?: string
           created_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'post_categories_post_id_fkey'
-            columns: ['post_id']
-            isOneToOne: false
-            referencedRelation: 'posts'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'post_categories_category_id_fkey'
-            columns: ['category_id']
-            isOneToOne: false
-            referencedRelation: 'categories'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       post_likes: {
         Row: {
@@ -216,15 +189,7 @@ export interface Database {
           identifier_hash?: string
           created_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'post_likes_post_id_fkey'
-            columns: ['post_id']
-            isOneToOne: false
-            referencedRelation: 'posts'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       post_views: {
         Row: {
@@ -248,15 +213,7 @@ export interface Database {
           referrer?: string | null
           created_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'post_views_post_id_fkey'
-            columns: ['post_id']
-            isOneToOne: false
-            referencedRelation: 'posts'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
@@ -290,6 +247,8 @@ export interface Database {
     Enums: {
       post_status: PostStatus
     }
-    CompositeTypes: Record<string, never>
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
 }
