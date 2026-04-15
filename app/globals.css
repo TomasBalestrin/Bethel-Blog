@@ -2,25 +2,133 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =============================================================================
+   Design System Tokens — Bethel Blog
+   Azul #3D6EBF + Dourado #B19365 + Warm Gray Claude
+   Mapeamento: tokens do design system → tokens shadcn (hsl)
+============================================================================= */
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 4%;
-    --primary: 240 80% 55%;
+    /* Tipografia */
+    --font-sans: var(--font-jakarta), 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+    /* Paleta base — escala azul */
+    --blue-50: 214 67% 96%;
+    --blue-100: 213 70% 90%;
+    --blue-200: 213 64% 80%;
+    --blue-300: 213 60% 69%;
+    --blue-400: 214 58% 59%;
+    --blue-500: 217 51% 49%;
+    --blue-600: 213 54% 40%;
+    --blue-700: 213 55% 32%;
+    --blue-800: 214 57% 24%;
+
+    /* Paleta base — escala dourada */
+    --gold-50: 38 60% 96%;
+    --gold-100: 40 62% 89%;
+    --gold-200: 38 58% 77%;
+    --gold-300: 36 52% 65%;
+    --gold-400: 34 44% 59%;
+    --gold-500: 34 36% 54%;
+    --gold-600: 36 30% 45%;
+    --gold-700: 36 33% 35%;
+
+    /* Warm gray */
+    --warm-100: 45 23% 95%;
+    --warm-200: 42 24% 90%;
+    --warm-300: 35 12% 79%;
+    --warm-400: 33 9% 66%;
+    --warm-500: 37 5% 54%;
+    --warm-600: 34 5% 43%;
+    --warm-700: 36 6% 32%;
+    --warm-800: 34 7% 22%;
+    --warm-900: 34 8% 15%;
+    --warm-950: 40 11% 9%;
+
+    /* Tokens shadcn — Light */
+    --background: 220 20% 96%;
+    --foreground: 216 28% 7%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 216 28% 7%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 216 28% 7%;
+
+    --primary: 217 51% 49%;
     --primary-foreground: 0 0% 100%;
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 40%;
-    --border: 240 6% 90%;
+
+    --secondary: 220 20% 93%;
+    --secondary-foreground: 218 11% 26%;
+
+    --muted: 220 20% 89%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 214 67% 96%;
+    --accent-foreground: 212 56% 32%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 222 11% 83%;
+    --input: 222 11% 83%;
+    --ring: 214 58% 59%;
+
+    --radius: 0.5rem;
+
+    /* Gold — accent premium */
+    --gold: 34 36% 54%;
+    --gold-foreground: 36 33% 35%;
+    --gold-muted: 40 62% 89%;
+
+    /* Sombras */
+    --sh-sm: 0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --sh-md: 0 4px 8px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
+    --sh-lg: 0 12px 28px rgba(0, 0, 0, 0.09), 0 4px 8px rgba(0, 0, 0, 0.05);
+    --sh-bl: 0 3px 14px rgba(61, 110, 191, 0.2), 0 1px 3px rgba(61, 110, 191, 0.11);
+    --sh-gl: 0 3px 14px rgba(177, 147, 101, 0.26), 0 1px 3px rgba(177, 147, 101, 0.13);
   }
 
   .dark {
-    --background: 240 10% 4%;
-    --foreground: 0 0% 98%;
-    --primary: 240 80% 65%;
-    --primary-foreground: 240 10% 4%;
-    --muted: 240 4% 12%;
-    --muted-foreground: 240 5% 65%;
-    --border: 240 4% 16%;
+    --background: 40 11% 9%;
+    --foreground: 45 23% 95%;
+
+    --card: 36 7% 14%;
+    --card-foreground: 45 23% 95%;
+
+    --popover: 36 7% 14%;
+    --popover-foreground: 45 23% 95%;
+
+    --primary: 214 58% 59%;
+    --primary-foreground: 216 28% 7%;
+
+    --secondary: 34 8% 15%;
+    --secondary-foreground: 35 12% 79%;
+
+    --muted: 34 7% 22%;
+    --muted-foreground: 37 5% 54%;
+
+    --accent: 34 8% 15%;
+    --accent-foreground: 45 23% 95%;
+
+    --destructive: 0 63% 40%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 34 7% 22%;
+    --input: 34 7% 22%;
+    --ring: 214 58% 59%;
+
+    --gold: 34 44% 59%;
+    --gold-foreground: 40 62% 89%;
+    --gold-muted: 34 20% 22%;
+
+    --sh-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --sh-md: 0 4px 8px rgba(0, 0, 0, 0.35);
+    --sh-lg: 0 12px 28px rgba(0, 0, 0, 0.45);
+    --sh-bl: 0 3px 14px rgba(90, 141, 212, 0.25), 0 1px 3px rgba(90, 141, 212, 0.12);
+    --sh-gl: 0 3px 14px rgba(196, 160, 104, 0.25), 0 1px 3px rgba(196, 160, 104, 0.12);
   }
 
   * {
@@ -29,5 +137,16 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  ::selection {
+    background: hsl(var(--blue-100));
+    color: hsl(var(--blue-800));
+  }
+
+  .dark ::selection {
+    background: hsl(var(--blue-400) / 0.26);
+    color: hsl(var(--blue-200));
   }
 }
