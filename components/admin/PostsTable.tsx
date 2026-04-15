@@ -10,9 +10,11 @@ import {
   Archive,
   Copy,
   Eye,
+  FileText,
   Heart,
   MoreVertical,
   Pencil,
+  Plus,
   Trash2,
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -27,6 +29,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { EmptyState } from '@/components/shared/EmptyState'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -94,9 +97,20 @@ function formatDate(iso: string | null) {
 export function PostsTable({ posts }: PostsTableProps) {
   if (posts.length === 0) {
     return (
-      <div className="rounded-md border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
-        Nenhum post encontrado.
-      </div>
+      <EmptyState
+        icon={FileText}
+        title="Nenhum post por aqui"
+        description="Crie o primeiro post ou ajuste os filtros pra ver outros status."
+        action={
+          <Link
+            href="/admin/posts/new"
+            className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90"
+          >
+            <Plus className="h-4 w-4" />
+            Novo post
+          </Link>
+        }
+      />
     )
   }
 

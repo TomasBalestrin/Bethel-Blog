@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Pencil, Plus, Trash2 } from 'lucide-react'
+import { Pencil, Plus, Tag, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 import {
@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { EmptyState } from '@/components/shared/EmptyState'
 import { CategoryModal, type CategoryRow } from './CategoryModal'
 
 export interface CategoryWithCount extends CategoryRow {
@@ -83,9 +84,17 @@ export function CategoriesManager({ categories }: CategoriesManagerProps) {
       </div>
 
       {categories.length === 0 ? (
-        <div className="rounded-md border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
-          Nenhuma categoria cadastrada.
-        </div>
+        <EmptyState
+          icon={Tag}
+          title="Nenhuma categoria cadastrada"
+          description="Crie categorias pra organizar seus posts por tema."
+          action={
+            <Button onClick={openNew}>
+              <Plus className="h-4 w-4" />
+              Nova categoria
+            </Button>
+          }
+        />
       ) : (
         <>
           {/* Desktop */}

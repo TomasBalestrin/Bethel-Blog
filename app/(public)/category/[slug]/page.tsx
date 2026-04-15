@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { FolderOpen } from 'lucide-react'
 
 import { PostCard, type PostCardData } from '@/components/post/PostCard'
 import { CategoryChip } from '@/components/shared/CategoryChip'
+import { EmptyState } from '@/components/shared/EmptyState'
 import { createClient } from '@/lib/supabase/server'
 
 export const revalidate = 60
@@ -137,27 +139,26 @@ export default async function CategoryPage({ params }: PageProps) {
             ))}
           </div>
         ) : (
-          <div className="rounded-xl border border-dashed border-border px-6 py-14 text-center">
-            <h2 className="text-lg font-semibold">
-              Nenhum post em {category.name} ainda
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Enquanto isso, explore outras categorias:
-            </p>
-            {otherCategories.length > 0 && (
-              <div className="mt-6 flex flex-wrap justify-center gap-2">
-                {otherCategories.map((c) => (
-                  <CategoryChip
-                    key={c.id}
-                    name={c.name}
-                    slug={c.slug}
-                    color={c.color}
-                    size="md"
-                  />
-                ))}
-              </div>
-            )}
-          </div>
+          <EmptyState
+            icon={FolderOpen}
+            title={`Nenhum post em ${category.name} ainda`}
+            description="Enquanto isso, explore outras categorias:"
+            action={
+              otherCategories.length > 0 ? (
+                <div className="flex flex-wrap justify-center gap-2">
+                  {otherCategories.map((c) => (
+                    <CategoryChip
+                      key={c.id}
+                      name={c.name}
+                      slug={c.slug}
+                      color={c.color}
+                      size="md"
+                    />
+                  ))}
+                </div>
+              ) : null
+            }
+          />
         )}
       </div>
     </div>

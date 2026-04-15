@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Search as SearchIcon } from 'lucide-react'
 
 import { PostCard, type PostCardData } from '@/components/post/PostCard'
+import { EmptyState } from '@/components/shared/EmptyState'
 import { SearchBar } from '@/components/shared/SearchBar'
 import { createClient } from '@/lib/supabase/server'
 
@@ -86,6 +87,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
 
       {!query && (
         <EmptyState
+          icon={SearchIcon}
           title="Digite pra buscar"
           description="Tente por título ou por uma palavra do resumo do post."
         />
@@ -93,6 +95,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
 
       {query && results.length === 0 && (
         <EmptyState
+          icon={SearchIcon}
           title={`Nenhum resultado para "${query}"`}
           description="Tente uma palavra-chave diferente."
         />
@@ -115,18 +118,3 @@ export default async function SearchPage({ searchParams }: PageProps) {
   )
 }
 
-function EmptyState({
-  title,
-  description,
-}: {
-  title: string
-  description: string
-}) {
-  return (
-    <div className="rounded-xl border border-dashed border-border px-6 py-16 text-center">
-      <SearchIcon className="mx-auto h-8 w-8 text-muted-foreground" />
-      <h2 className="mt-4 text-lg font-semibold">{title}</h2>
-      <p className="mt-2 text-sm text-muted-foreground">{description}</p>
-    </div>
-  )
-}
