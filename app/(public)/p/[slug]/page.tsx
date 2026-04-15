@@ -5,6 +5,7 @@ import { PostActions } from '@/components/post/PostActions'
 import { PostContent } from '@/components/post/PostContent'
 import { PostHero, type PostHeroData } from '@/components/post/PostHero'
 import { ReadingProgress } from '@/components/post/ReadingProgress'
+import { ViewTracker } from '@/components/post/ViewTracker'
 import { buildArticleJsonLd } from '@/lib/seo/jsonld'
 import { buildPostMetadata } from '@/lib/seo/metadata'
 import { createClient } from '@/lib/supabase/server'
@@ -106,6 +107,7 @@ export default async function PostPage({ params }: PageProps) {
   return (
     <>
       <ReadingProgress />
+      <ViewTracker postId={post.id} />
 
       <article className="container max-w-[720px] py-8 md:py-12">
         <PostHero post={heroData} authorName={authorName} authorAvatar={authorAvatar} />
