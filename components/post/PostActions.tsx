@@ -20,7 +20,17 @@ export function PostActions({
   excerpt,
 }: PostActionsProps) {
   return (
-    <div className="sticky top-16 z-10 -mx-4 flex items-center gap-2 border-y border-border bg-background/80 px-4 py-3 backdrop-blur md:mx-0 md:rounded-md md:border md:px-4">
+    <div
+      role="toolbar"
+      aria-label="Ações do post"
+      className="
+        fixed inset-x-4 bottom-4 z-30 flex items-center justify-center gap-2
+        rounded-full border border-border bg-background/95 px-2 py-1.5
+        shadow-lg backdrop-blur
+        md:static md:inset-auto md:rounded-md md:border md:bg-background/80
+        md:px-4 md:py-3 md:shadow-none md:justify-start
+      "
+    >
       <LikeButton postId={postId} initialCount={initialLikes} />
       <ShareButton url={url} title={title} text={excerpt ?? undefined} />
       <CopyLinkButton url={url} />

@@ -20,8 +20,17 @@ export async function PublicHeader() {
   const avatarUrl = profile?.avatar_url
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
-      <div className="container flex h-16 items-center gap-4">
+    <>
+      {/* Skip link (fica invisível até receber foco via teclado) */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg"
+      >
+        Pular para o conteúdo
+      </a>
+
+      <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
+        <div className="container flex h-16 items-center gap-4">
         <Link
           href="/"
           aria-label={`Ir para a home de ${blogTitle}`}
@@ -60,14 +69,15 @@ export async function PublicHeader() {
           </nav>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1">
-          <SearchBar />
-          <ThemeToggle />
-          <div className="md:hidden">
-            <MobileNav blogTitle={blogTitle} />
+          <div className="flex shrink-0 items-center gap-1">
+            <SearchBar />
+            <ThemeToggle />
+            <div className="md:hidden">
+              <MobileNav blogTitle={blogTitle} />
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   )
 }

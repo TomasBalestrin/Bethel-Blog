@@ -25,12 +25,25 @@ export function PostContent({ contentHtml, contentJson, className }: PostContent
   }
 
   return (
-    <div
-      className={cn(
-        'post-content space-y-5 text-base leading-relaxed md:text-lg',
-        className
-      )}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <>
+      <div
+        className={cn(
+          'post-content space-y-5 text-base leading-relaxed md:text-lg',
+          className
+        )}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      {/* prefers-reduced-motion: neutraliza transições e animações
+          em imagens/elementos injetados via HTML do usuário. */}
+      <style>{`
+        @media (prefers-reduced-motion: reduce) {
+          .post-content img,
+          .post-content * {
+            transition: none !important;
+            animation: none !important;
+          }
+        }
+      `}</style>
+    </>
   )
 }

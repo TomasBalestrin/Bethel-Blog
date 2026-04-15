@@ -35,7 +35,7 @@ export function FeaturedPost({ post, authorName, authorAvatar }: FeaturedPostPro
             fill
             sizes="(min-width: 1024px) 42vw, 100vw"
             priority
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-105"
           />
         </Link>
       )}
