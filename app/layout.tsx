@@ -20,9 +20,53 @@ const jetbrains = JetBrains_Mono({
   display: 'swap',
 })
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+
 export const metadata: Metadata = {
-  title: 'Bethel Blog',
-  description: 'Blog pessoal single-user estilo Substack.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Bethel Blog',
+    template: '%s | Bethel Blog',
+  },
+  description:
+    'Insights sobre produto, sistemas e empreendedorismo por Bethel.',
+  applicationName: 'Bethel Blog',
+  authors: [{ name: 'Bethel' }],
+  creator: 'Bethel',
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: SITE_URL,
+    siteName: 'Bethel Blog',
+    title: 'Bethel Blog',
+    description:
+      'Insights sobre produto, sistemas e empreendedorismo por Bethel.',
+    images: [
+      {
+        url: '/og-default.png',
+        width: 1200,
+        height: 630,
+        alt: 'Bethel Blog',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Bethel Blog',
+    description:
+      'Insights sobre produto, sistemas e empreendedorismo por Bethel.',
+    images: ['/og-default.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 }
 
 export default function RootLayout({
