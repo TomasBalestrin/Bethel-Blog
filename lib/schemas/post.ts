@@ -26,11 +26,17 @@ export const CreatePostSchema = z.object({
   status: PostStatusSchema.default('draft'),
   scheduled_at: z.string().datetime().optional().nullable(),
   category_ids: z.array(z.string().uuid()).max(5).default([]),
+  instructor_id: z.string().uuid('Selecione um instrutor'),
   meta_title: z.string().max(70).optional().nullable(),
   meta_description: z.string().max(160).optional().nullable(),
 })
 
-export const UpdatePostSchema = CreatePostSchema.partial()
+// Todos os campos opcionais exceto instructor_id — regra de negócio:
+// todo save de post (exceto drafts em branco) precisa ter instrutor.
+// Ver Tarefa 3.4 pra integração no form.
+export const UpdatePostSchema = CreatePostSchema.partial().extend({
+  instructor_id: z.string().uuid('Selecione um instrutor'),
+})
 
 export type CreatePostInput = z.infer<typeof CreatePostSchema>
 export type UpdatePostInput = z.infer<typeof UpdatePostSchema>
