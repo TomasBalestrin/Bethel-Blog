@@ -1,3 +1,14 @@
+/**
+ * @deprecated Não importar em código novo. Renderiza HTML do Tiptap
+ * legado via dangerouslySetInnerHTML — incompatível com o novo
+ * formato block-based (PostContent v1 de @/types/post-blocks).
+ *
+ * Use {@link BlockRenderer} de @/components/post/BlockRenderer.
+ *
+ * Arquivo mantido no repo como proteção contra imports esquecidos
+ * até a task de cleanup final do Tiptap. NÃO é importado em nenhum
+ * lugar em runtime desde a Tarefa 2.4.
+ */
 import { renderTiptapToHtml } from '@/lib/utils/tiptap-renderer'
 import { cn } from '@/lib/utils/cn'
 

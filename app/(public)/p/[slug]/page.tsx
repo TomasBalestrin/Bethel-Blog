@@ -1,14 +1,15 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
+import { BlockRenderer } from '@/components/post/BlockRenderer'
 import { PostActions } from '@/components/post/PostActions'
-import { PostContent } from '@/components/post/PostContent'
 import { PostHero, type PostHeroData } from '@/components/post/PostHero'
 import { ReadingProgress } from '@/components/post/ReadingProgress'
 import { ViewTracker } from '@/components/post/ViewTracker'
 import { buildArticleJsonLd } from '@/lib/seo/jsonld'
 import { buildPostMetadata } from '@/lib/seo/metadata'
 import { createClient } from '@/lib/supabase/server'
+import { PostContentSchema } from '@/types/post-blocks'
 
 export const revalidate = 60
 
@@ -25,7 +26,7 @@ async function fetchPost(slug: string) {
     supabase
       .from('posts')
       .select(
-        'id, title, slug, excerpt, cover_url, cover_alt, content, content_html, published_at, updated_at, reading_time, views_count, likes_count, meta_title, meta_description, post_categories(categories(id, name, slug, color))'
+        'id, title, slug, excerpt, cover_url, cover_alt, content, published_at, updated_at, reading_time, views_count, likes_count, meta_title, meta_description, post_categories(categories(id, name, slug, color))'
       )
       .eq('status', 'published')
       .is('deleted_at', null)
@@ -75,6 +76,15 @@ export default async function PostPage({ params }: PageProps) {
     notFound()
   }
 
+  const parsedContent = PostContentSchema.safeParse(post.content)
+  if (!parsedContent.success) {
+    console.warn(
+      '[post-render] content inválido no slug',
+      slug,
+      parsedContent.error.flatten()
+    )
+  }
+
   const authorName = profile?.name ?? 'Bethel'
   const authorAvatar = profile?.avatar_url
   const url = `${SITE_URL}/p/${post.slug}`
@@ -122,7 +132,9 @@ export default async function PostPage({ params }: PageProps) {
           />
         </div>
 
-        <PostContent contentHtml={post.content_html} contentJson={post.content} />
+        <BlockRenderer
+          content={parsedContent.success ? parsedContent.data : post.content}
+        />
       </article>
 
       <script
