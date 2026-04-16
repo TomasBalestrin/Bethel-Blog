@@ -26,7 +26,7 @@ async function fetchPost(slug: string) {
     supabase
       .from('posts')
       .select(
-        'id, title, slug, excerpt, cover_url, cover_alt, content, published_at, updated_at, reading_time, views_count, likes_count, meta_title, meta_description, post_categories(categories(id, name, slug, color))'
+        'id, title, slug, excerpt, cover_url, cover_alt, content, published_at, updated_at, reading_time, views_count, likes_count, meta_title, meta_description, instructor:instructors(id, name, slug, avatar_url), post_categories(categories(id, name, slug, color))'
       )
       .eq('status', 'published')
       .is('deleted_at', null)
@@ -65,7 +65,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     published_at: post.published_at,
     meta_title: post.meta_title,
     meta_description: post.meta_description,
-    authorName: profile?.name,
+    // Prefere instrutor do post como autor no meta; fallback profile
+    authorName: post.instructor?.name ?? profile?.name,
   })
 }
 
@@ -85,8 +86,9 @@ export default async function PostPage({ params }: PageProps) {
     )
   }
 
-  const authorName = profile?.name ?? 'Bethel'
-  const authorAvatar = profile?.avatar_url
+  const profileName = profile?.name ?? 'Bethel'
+  const profileAvatar = profile?.avatar_url
+  const instructor = post.instructor ?? null
   const url = `${SITE_URL}/p/${post.slug}`
 
   const categories = (post.post_categories ?? [])
@@ -101,7 +103,12 @@ export default async function PostPage({ params }: PageProps) {
     published_at: post.published_at,
     reading_time: post.reading_time,
     categories,
+    instructor,
   }
+
+  // JSON-LD: autor é o instrutor (se houver), senão o profile do blog
+  const jsonLdAuthorName = instructor?.name ?? profileName
+  const jsonLdAuthorAvatar = instructor?.avatar_url ?? profileAvatar ?? null
 
   const jsonLd = buildArticleJsonLd({
     title: post.title,
@@ -110,8 +117,8 @@ export default async function PostPage({ params }: PageProps) {
     cover_url: post.cover_url,
     published_at: post.published_at,
     updated_at: post.updated_at,
-    authorName,
-    authorAvatar: authorAvatar ?? null,
+    authorName: jsonLdAuthorName,
+    authorAvatar: jsonLdAuthorAvatar,
   })
 
   return (
@@ -120,7 +127,11 @@ export default async function PostPage({ params }: PageProps) {
       <ViewTracker postId={post.id} />
 
       <article className="container max-w-[720px] py-8 md:py-12">
-        <PostHero post={heroData} authorName={authorName} authorAvatar={authorAvatar} />
+        <PostHero
+          post={heroData}
+          authorName={profileName}
+          authorAvatar={profileAvatar}
+        />
 
         <div className="my-8">
           <PostActions

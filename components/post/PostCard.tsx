@@ -19,6 +19,12 @@ export interface PostCardData {
   views_count: number
   likes_count: number
   categories?: { id: string; name: string; slug: string; color: string }[]
+  instructor?: {
+    id: string
+    name: string
+    slug: string
+    avatar_url: string
+  } | null
 }
 
 interface PostCardProps {
@@ -41,6 +47,10 @@ export function PostCard({
 }: PostCardProps) {
   const href = `/p/${post.slug}`
   const primaryCategory = post.categories?.[0]
+  // Prefere instrutor do post; fallback pro autor do blog (prop).
+  // Se nenhum dos dois, omite a linha de autor.
+  const displayName = post.instructor?.name ?? authorName ?? null
+  const displayAvatar = post.instructor?.avatar_url ?? authorAvatar ?? null
 
   if (variant === 'compact') {
     return (
@@ -122,17 +132,18 @@ export function PostCard({
           </p>
         )}
         <div className="flex items-center gap-3">
-          {authorAvatar && (
+          {displayAvatar && (
             <Image
-              src={authorAvatar}
-              alt={authorName ?? ''}
+              src={displayAvatar}
+              alt={displayName ?? ''}
               width={24}
               height={24}
               className="h-6 w-6 rounded-full object-cover"
             />
           )}
-          {authorName && (
-            <span className="text-xs font-medium">{authorName}</span>
+          {displayName && (
+            // TODO: linkar pra /instructor/[slug] quando existir
+            <span className="text-xs font-medium">{displayName}</span>
           )}
           <PostMeta
             date={post.published_at}

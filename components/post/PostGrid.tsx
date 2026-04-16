@@ -28,6 +28,10 @@ interface ApiPost {
   reading_time: number | null
   views_count: number
   likes_count: number
+  /** Pode vir null se a API pública ainda não faz join instructor. */
+  instructor?:
+    | { id: string; name: string; slug: string; avatar_url: string }
+    | null
   post_categories: {
     category_id: string
     categories: { id: string; name: string; slug: string; color: string } | null
@@ -46,6 +50,7 @@ function mapApiPost(post: ApiPost): PostCardData {
     reading_time: post.reading_time,
     views_count: post.views_count,
     likes_count: post.likes_count,
+    instructor: post.instructor ?? null,
     categories: (post.post_categories ?? [])
       .map((pc) => pc.categories)
       .filter((c): c is NonNullable<typeof c> => c !== null),

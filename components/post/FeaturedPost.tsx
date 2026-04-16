@@ -21,6 +21,8 @@ function formatDate(iso: string | null) {
 export function FeaturedPost({ post, authorName, authorAvatar }: FeaturedPostProps) {
   const href = `/p/${post.slug}`
   const primaryCategory = post.categories?.[0]
+  const displayName = post.instructor?.name ?? authorName ?? null
+  const displayAvatar = post.instructor?.avatar_url ?? authorAvatar ?? null
 
   return (
     <article className="group flex h-full flex-col">
@@ -59,16 +61,17 @@ export function FeaturedPost({ post, authorName, authorAvatar }: FeaturedPostPro
           </p>
         )}
         <div className="flex items-center gap-3 text-sm">
-          {authorAvatar && (
+          {displayAvatar && (
             <Image
-              src={authorAvatar}
-              alt={authorName ?? ''}
+              src={displayAvatar}
+              alt={displayName ?? ''}
               width={32}
               height={32}
               className="h-8 w-8 rounded-full object-cover"
             />
           )}
-          {authorName && <span className="font-medium">{authorName}</span>}
+          {/* TODO: linkar pra /instructor/[slug] quando existir */}
+          {displayName && <span className="font-medium">{displayName}</span>}
           <span className="text-muted-foreground">
             {formatDate(post.published_at)}
           </span>
