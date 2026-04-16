@@ -65,3 +65,31 @@ export async function ensureUniqueCategorySlug(
     candidate = `${base}-${attempt}`
   }
 }
+
+/**
+ * Mesma lógica para instrutores.
+ */
+export async function ensureUniqueInstructorSlug(
+  supabase: SupabaseServerClient,
+  base: string,
+  ignoreId?: string
+): Promise<string> {
+  let candidate = base
+  let attempt = 1
+
+  while (true) {
+    let query = supabase
+      .from('instructors')
+      .select('id')
+      .eq('slug', candidate)
+      .limit(1)
+    if (ignoreId) query = query.neq('id', ignoreId)
+
+    const { data, error } = await query
+    if (error) throw error
+    if (!data || data.length === 0) return candidate
+
+    attempt += 1
+    candidate = `${base}-${attempt}`
+  }
+}
