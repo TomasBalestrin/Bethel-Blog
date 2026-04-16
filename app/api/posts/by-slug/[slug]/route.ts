@@ -16,7 +16,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     const { data, error } = await supabase
       .from('posts')
       .select(
-        'id, title, slug, excerpt, cover_url, cover_alt, content, content_html, published_at, reading_time, views_count, likes_count, meta_title, meta_description, post_categories(categories(id, name, slug, color))'
+        'id, title, slug, excerpt, cover_url, cover_alt, content, content_html, published_at, reading_time, views_count, likes_count, meta_title, meta_description, instructor:instructors(id, name, slug, avatar_url), post_categories(categories(id, name, slug, color))'
       )
       // RLS já restringe ao público, mas reforço:
       .eq('status', 'published')
