@@ -31,12 +31,14 @@ export const CreatePostSchema = z.object({
   meta_description: z.string().max(160).optional().nullable(),
 })
 
-// Todos os campos opcionais exceto instructor_id — regra de negócio:
-// todo save de post (exceto drafts em branco) precisa ter instrutor.
-// Ver Tarefa 3.4 pra integração no form.
-export const UpdatePostSchema = CreatePostSchema.partial().extend({
-  instructor_id: z.string().uuid('Selecione um instrutor'),
-})
+// instructor_id é OBRIGATÓRIO no Create (regra de negócio: todo post
+// precisa ter instrutor atribuído ao salvar/publicar). No Update,
+// vira OPCIONAL via .partial() — PATCH parcial (só status, só
+// scheduled_at) continua funcionando e não precisa reenviar o campo.
+// A obrigatoriedade é enforçada no form pelo Create path + pelo
+// CHECK constraint implícito do negócio (sem instructor_id, o post
+// fica num estado parcial até a primeira edição completa).
+export const UpdatePostSchema = CreatePostSchema.partial()
 
 export type CreatePostInput = z.infer<typeof CreatePostSchema>
 export type UpdatePostInput = z.infer<typeof UpdatePostSchema>

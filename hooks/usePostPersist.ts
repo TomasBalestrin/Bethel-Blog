@@ -14,6 +14,7 @@ interface PersistInput {
   meta_description: string
   content: PostContent
   category_ids: string[]
+  instructor_id: string | null
 }
 
 interface UsePostPersistResult {
@@ -49,6 +50,7 @@ export function usePostPersist(
           meta_title: data.meta_title || null,
           meta_description: data.meta_description || null,
           category_ids: data.category_ids,
+          instructor_id: data.instructor_id,
         }),
       })
       if (!response.ok) {
