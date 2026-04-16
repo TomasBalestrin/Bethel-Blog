@@ -4,6 +4,13 @@ import { ptBR } from 'date-fns/locale'
 
 import { CategoryChip } from '@/components/shared/CategoryChip'
 
+export interface PostHeroInstructor {
+  id: string
+  name: string
+  slug: string
+  avatar_url: string
+}
+
 export interface PostHeroData {
   title: string
   excerpt: string | null
@@ -12,11 +19,13 @@ export interface PostHeroData {
   published_at: string | null
   reading_time: number | null
   categories: { id: string; name: string; slug: string; color: string }[]
+  instructor?: PostHeroInstructor | null
 }
 
 interface PostHeroProps {
   post: PostHeroData
-  authorName: string
+  /** Fallback quando post.instructor é null (compatibilidade legada). */
+  authorName?: string
   authorAvatar?: string | null
 }
 
@@ -26,6 +35,10 @@ export function PostHero({ post, authorName, authorAvatar }: PostHeroProps) {
         locale: ptBR,
       })
     : ''
+
+  // Prefere instrutor do post; fallback pro profile. Se nenhum, só data.
+  const displayName = post.instructor?.name ?? authorName ?? null
+  const displayAvatar = post.instructor?.avatar_url ?? authorAvatar ?? null
 
   return (
     <header className="space-y-6">
@@ -65,18 +78,25 @@ export function PostHero({ post, authorName, authorAvatar }: PostHeroProps) {
           </p>
         )}
         <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-          {authorAvatar && (
+          {displayAvatar && (
             <Image
-              src={authorAvatar}
-              alt={authorName}
+              src={displayAvatar}
+              alt={displayName ?? ''}
               width={36}
               height={36}
               className="h-9 w-9 rounded-full object-cover"
             />
           )}
-          <span className="font-medium text-foreground">{authorName}</span>
-          {dateLabel && <span>· {dateLabel}</span>}
-          {post.reading_time && <span>· {post.reading_time} min de leitura</span>}
+          {/* TODO: linkar pra /instructor/[slug] quando existir */}
+          {displayName && (
+            <span className="font-medium text-foreground">{displayName}</span>
+          )}
+          {dateLabel && (
+            <span>{displayName ? '· ' : ''}{dateLabel}</span>
+          )}
+          {post.reading_time && (
+            <span>· {post.reading_time} min de leitura</span>
+          )}
         </div>
       </div>
     </header>

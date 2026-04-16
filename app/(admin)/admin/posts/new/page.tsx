@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase/server'
 import { ensureUniqueSlug, generateSlug } from '@/lib/utils/slug'
+import type { Json } from '@/types/database'
+import { createEmptyContent } from '@/types/post-blocks'
 
 export const metadata = {
   title: 'Novo post — Admin Bethel Blog',
@@ -29,7 +31,7 @@ export default async function NewPostPage() {
       author_id: user.id,
       title: 'Rascunho sem título',
       slug,
-      content: { type: 'doc', content: [{ type: 'paragraph' }] },
+      content: createEmptyContent() as unknown as Json,
       status: 'draft',
     })
     .select('id')

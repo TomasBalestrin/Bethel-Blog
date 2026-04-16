@@ -91,6 +91,36 @@ export type Database = {
         }
         Relationships: []
       }
+      instructors: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          avatar_url: string
+          bio: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          avatar_url: string
+          bio?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          avatar_url?: string
+          bio?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       posts: {
         Row: {
           id: string
@@ -110,6 +140,7 @@ export type Database = {
           reading_time: number | null
           meta_title: string | null
           meta_description: string | null
+          instructor_id: string | null
           created_at: string
           updated_at: string
           deleted_at: string | null
@@ -127,6 +158,7 @@ export type Database = {
           status?: PostStatus
           scheduled_at?: string | null
           published_at?: string | null
+          instructor_id?: string | null
           views_count?: number
           likes_count?: number
           reading_time?: number | null
@@ -154,6 +186,7 @@ export type Database = {
           reading_time?: number | null
           meta_title?: string | null
           meta_description?: string | null
+          instructor_id?: string | null
           created_at?: string
           updated_at?: string
           deleted_at?: string | null
@@ -164,6 +197,13 @@ export type Database = {
             columns: ['author_id']
             isOneToOne: false
             referencedRelation: 'profile'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'posts_instructor_id_fkey'
+            columns: ['instructor_id']
+            isOneToOne: false
+            referencedRelation: 'instructors'
             referencedColumns: ['id']
           },
         ]

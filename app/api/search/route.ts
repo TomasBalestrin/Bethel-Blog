@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase
       .from('posts')
       .select(
-        'id, title, slug, excerpt, cover_url, cover_alt, published_at, reading_time, views_count, likes_count, post_categories(categories(id, name, slug, color))'
+        'id, title, slug, excerpt, cover_url, cover_alt, published_at, reading_time, views_count, likes_count, instructor:instructors(id, name, slug, avatar_url), post_categories(categories(id, name, slug, color))'
       )
       .eq('status', 'published')
       .is('deleted_at', null)

@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from('posts')
       .select(
-        'id, title, slug, excerpt, cover_url, cover_alt, published_at, reading_time, views_count, likes_count, post_categories!inner(category_id, categories(id, name, slug, color))',
+        'id, title, slug, excerpt, cover_url, cover_alt, published_at, reading_time, views_count, likes_count, instructor:instructors(id, name, slug, avatar_url), post_categories!inner(category_id, categories(id, name, slug, color))',
         { count: 'exact' }
       )
       // RLS já filtra published + not-deleted; reforço explícito pra safety:

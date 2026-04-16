@@ -24,6 +24,9 @@ interface JoinedPost {
   reading_time: number | null
   views_count: number
   likes_count: number
+  instructor:
+    | { id: string; name: string; slug: string; avatar_url: string }
+    | null
   post_categories:
     | {
         categories: { id: string; name: string; slug: string; color: string } | null
@@ -43,6 +46,7 @@ function toCardData(post: JoinedPost): PostCardData {
     reading_time: post.reading_time,
     views_count: post.views_count,
     likes_count: post.likes_count,
+    instructor: post.instructor,
     categories: (post.post_categories ?? [])
       .map((pc) => pc.categories)
       .filter((c): c is NonNullable<typeof c> => c !== null),
@@ -80,7 +84,7 @@ export default async function CategoryPage({ params }: PageProps) {
     supabase
       .from('posts')
       .select(
-        'id, title, slug, excerpt, cover_url, cover_alt, published_at, reading_time, views_count, likes_count, post_categories!inner(category_id, categories(id, name, slug, color))'
+        'id, title, slug, excerpt, cover_url, cover_alt, published_at, reading_time, views_count, likes_count, instructor:instructors(id, name, slug, avatar_url), post_categories!inner(category_id, categories(id, name, slug, color))'
       )
       .eq('status', 'published')
       .is('deleted_at', null)

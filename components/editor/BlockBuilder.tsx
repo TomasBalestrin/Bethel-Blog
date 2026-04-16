@@ -1,7 +1,9 @@
 'use client'
 
 import { useCallback } from 'react'
-import { nanoid } from 'nanoid'
+
+import { createBlock } from '@/types/post-blocks'
+import type { Block, BlockType, PostContent } from '@/types/post-blocks'
 
 import { AddBlockButton } from './blocks/AddBlockButton'
 import { BlockActions } from './blocks/BlockActions'
@@ -9,29 +11,10 @@ import { HeadingBlock } from './blocks/HeadingBlock'
 import { ImageBlock } from './blocks/ImageBlock'
 import { ParagraphBlock } from './blocks/ParagraphBlock'
 import { VideoBlock } from './blocks/VideoBlock'
-import type {
-  Block,
-  BlockType,
-  PostContent,
-} from '@/types/post-blocks'
 
 interface BlockBuilderProps {
   value: PostContent
   onChange: (value: PostContent) => void
-}
-
-function createBlock(type: BlockType): Block {
-  const id = nanoid(10)
-  switch (type) {
-    case 'heading':
-      return { id, type, text: '' }
-    case 'paragraph':
-      return { id, type, text: '' }
-    case 'image':
-      return { id, type, url: null, alt: '' }
-    case 'video':
-      return { id, type, provider: 'youtube', videoId: null }
-  }
 }
 
 export function BlockBuilder({ value, onChange }: BlockBuilderProps) {
