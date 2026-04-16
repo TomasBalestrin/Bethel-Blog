@@ -1,48 +1,10 @@
-import { z } from 'zod'
-
+import { PostContentSchema } from '@/types/post-blocks'
 import type { Block, PostContent } from '@/types/post-blocks'
 
 import { HeadingRender } from './blocks/HeadingRender'
 import { ImageRender } from './blocks/ImageRender'
 import { ParagraphRender } from './blocks/ParagraphRender'
 import { VideoRender } from './blocks/VideoRender'
-
-// Schema de validação em runtime. Definido localmente pra manter o
-// escopo desta tarefa fechado (types/post-blocks.ts não é editado).
-const BaseBlockSchema = z.object({ id: z.string().min(1) })
-
-const HeadingSchema = BaseBlockSchema.extend({
-  type: z.literal('heading'),
-  text: z.string(),
-})
-const ParagraphSchema = BaseBlockSchema.extend({
-  type: z.literal('paragraph'),
-  text: z.string(),
-})
-const ImageSchema = BaseBlockSchema.extend({
-  type: z.literal('image'),
-  url: z.string().url().nullable(),
-  alt: z.string(),
-  caption: z.string().optional(),
-})
-const VideoSchema = BaseBlockSchema.extend({
-  type: z.literal('video'),
-  provider: z.literal('youtube'),
-  videoId: z.string().nullable(),
-  caption: z.string().optional(),
-})
-
-const BlockSchema = z.discriminatedUnion('type', [
-  HeadingSchema,
-  ParagraphSchema,
-  ImageSchema,
-  VideoSchema,
-])
-
-const PostContentSchema = z.object({
-  version: z.literal(1),
-  blocks: z.array(BlockSchema),
-})
 
 interface BlockRendererProps {
   content: PostContent | unknown

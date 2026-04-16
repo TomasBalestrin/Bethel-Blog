@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { EMPTY_POST_CONTENT, PostContentSchema } from '@/types/post-blocks'
+
 const SlugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 export const PostStatusSchema = z.enum([
@@ -20,7 +22,7 @@ export const CreatePostSchema = z.object({
   excerpt: z.string().max(500).optional().nullable(),
   cover_url: z.string().url('URL de capa inválida').optional().nullable(),
   cover_alt: z.string().max(200).optional().nullable(),
-  content: z.record(z.unknown()).default({}),
+  content: PostContentSchema.default(EMPTY_POST_CONTENT),
   status: PostStatusSchema.default('draft'),
   scheduled_at: z.string().datetime().optional().nullable(),
   category_ids: z.array(z.string().uuid()).max(5).default([]),
