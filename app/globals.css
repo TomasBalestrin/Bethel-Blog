@@ -11,8 +11,9 @@
 @layer base {
   :root {
     /* Tipografia */
-    --font-sans: var(--font-jakarta), 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+    --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Lora', ui-serif, Georgia, serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
     /* Paleta base — escala azul */
     --blue-50: 214 67% 96%;
@@ -137,7 +138,17 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-family: var(--font-sans);
     font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
   }
 
   ::selection {
