@@ -23,8 +23,9 @@ function extractStoragePath(url: string | null | undefined): string | null {
 }
 
 /**
- * Walker recursivo do JSON Tiptap coletando atributos src de
- * nodes do tipo image.
+ * Walker recursivo do JSON do post coletando URLs de imagem. Tolera
+ * formato novo (blocks) e estruturas ad-hoc: qualquer node.attrs.src
+ * em type='image' conta.
  */
 function collectImageUrls(node: unknown, acc: Set<string>): void {
   if (!node) return

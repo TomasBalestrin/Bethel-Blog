@@ -12,7 +12,7 @@ const EMPTY: PostContent = { version: 1, blocks: [] }
 
 /**
  * Aceita conteúdo vindo do banco (JSONB) e retorna PostContent
- * válido. Conteúdo legado (Tiptap, formato inválido, null) → vazio.
+ * válido. Formato inválido ou null → vazio.
  */
 export function normalizeContent(raw: unknown): PostContent {
   if (raw === null || raw === undefined) return EMPTY

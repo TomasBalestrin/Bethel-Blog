@@ -24,13 +24,10 @@ function isBlocksContent(value: unknown): value is PostContent {
 /**
  * Tempo estimado de leitura em minutos (mínimo 1).
  *
- * Aceita o novo formato block-based (PostContent v1). Pra blocks
+ * Aceita o formato block-based (PostContent v1). Pra blocks
  * heading/paragraph soma o texto cru sem markdown; outros tipos
- * (image/video) não contam.
- *
- * Tolerante a content legado (Tiptap JSON antigo) — faz extract
- * recursivo de qualquer node.text. Posts greenfield sempre passam
- * pelo formato novo.
+ * (image/video) não contam. Tem fallback recursivo tolerante a
+ * JSON ad-hoc com node.text.
  */
 export function calculateReadingTime(content: unknown): number {
   let plain: string

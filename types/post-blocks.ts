@@ -1,7 +1,6 @@
 /**
- * Modelo de conteúdo block-based do post. Substitui o JSON Tiptap.
- * Versionado pra permitir migração futura (ex: v2 com colunas,
- * embeds extras, etc).
+ * Modelo de conteúdo block-based do post. Versionado pra permitir
+ * migração futura (ex: v2 com colunas, embeds extras, etc).
  *
  * IMPORTANTE: 4 tipos apenas na v1 — heading, paragraph, image, video.
  */
