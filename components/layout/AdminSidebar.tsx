@@ -5,12 +5,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   ExternalLink,
+  FileText,
   LayoutDashboard,
   LogOut,
   Settings,
   Tag,
+  Users,
   type LucideIcon,
-  FileText,
 } from 'lucide-react'
 
 import {
@@ -48,6 +49,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/posts', label: 'Posts', icon: FileText },
   { href: '/admin/categories', label: 'Categorias', icon: Tag },
+  { href: '/admin/instructors', label: 'Instrutores', icon: Users },
   { href: '/admin/settings', label: 'Configurações', icon: Settings },
 ]
 
