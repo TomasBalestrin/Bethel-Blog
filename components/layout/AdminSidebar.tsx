@@ -58,13 +58,13 @@ export function AdminSidebar({ profile }: AdminSidebarProps) {
   return (
     <>
       {/* Desktop */}
-      <aside className="hidden w-64 shrink-0 border-r border-border bg-card md:flex md:flex-col">
+      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 overflow-hidden border-r border-border bg-card md:flex md:flex-col">
         <SidebarContent profile={profile} />
       </aside>
 
       {/* Mobile drawer */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <SheetContent side="left" className="w-72 p-0">
+        <SheetContent side="left" className="w-72 overflow-hidden p-0">
           <SheetHeader className="sr-only">
             <SheetTitle>Menu admin</SheetTitle>
           </SheetHeader>
@@ -84,8 +84,8 @@ function SidebarContent({ profile, onNavigate }: SidebarContentProps) {
   const pathname = usePathname()
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center border-b border-border px-6">
+    <div className="flex h-full flex-col overflow-hidden">
+      <div className="flex h-16 shrink-0 items-center border-b border-border px-6">
         <Link
           href="/admin"
           onClick={onNavigate}
@@ -98,7 +98,10 @@ function SidebarContent({ profile, onNavigate }: SidebarContentProps) {
         </Link>
       </div>
 
-      <nav className="flex-1 space-y-1 p-3" aria-label="Navegação admin">
+      <nav
+        className="min-h-0 flex-1 space-y-1 overflow-y-auto p-3"
+        aria-label="Navegação admin"
+      >
         {NAV_ITEMS.map((item) => {
           const isActive =
             item.href === '/admin'
@@ -137,7 +140,7 @@ function SidebarFooter({ profile }: { profile: SidebarProfile | null }) {
   const initial = name.charAt(0).toUpperCase()
 
   return (
-    <div className="border-t border-border p-3">
+    <div className="mt-auto shrink-0 border-t border-border p-3">
       <DropdownMenu>
         <DropdownMenuTrigger className="flex w-full items-center gap-3 rounded-md p-2 text-left transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
           {avatarUrl ? (
