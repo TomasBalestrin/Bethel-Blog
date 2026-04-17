@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { Heart } from 'lucide-react'
 
 export interface PostCardData {
   id: string
@@ -39,19 +40,36 @@ function formatMeta(date: string | null, name: string | null): string {
   return parts.join(' · ')
 }
 
+function CoverImage({ post }: { post: PostCardData }) {
+  if (!post.cover_url) return null
+  return (
+    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
+      <Image
+        src={post.cover_url}
+        alt={post.cover_alt ?? post.title}
+        fill
+        sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+        className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+      />
+      {post.likes_count > 0 && (
+        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+          <Heart className="h-3.5 w-3.5 fill-white" />
+          <span>{post.likes_count}</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function PostCard({ post, variant = 'default', authorName }: PostCardProps) {
   const href = `/p/${post.slug}`
   const displayName = post.instructor?.name ?? authorName ?? null
 
   if (variant === 'compact') {
     return (
-      <article>
-        <Link href={href} className="group block">
-          {post.cover_url && (
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
-              <Image src={post.cover_url} alt={post.cover_alt ?? post.title} fill sizes="280px" className="object-cover" />
-            </div>
-          )}
+      <article className="group">
+        <Link href={href} className="block">
+          <CoverImage post={post} />
           <h3 className="mt-3 font-serif text-base font-bold leading-tight">
             {post.title}
           </h3>
@@ -67,13 +85,9 @@ export function PostCard({ post, variant = 'default', authorName }: PostCardProp
   }
 
   return (
-    <article>
-      <Link href={href} className="group block">
-        {post.cover_url && (
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
-            <Image src={post.cover_url} alt={post.cover_alt ?? post.title} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
-          </div>
-        )}
+    <article className="group">
+      <Link href={href} className="block">
+        <CoverImage post={post} />
         <h2 className="mt-3 font-serif text-[17px] font-bold leading-tight">
           {post.title}
         </h2>

@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { Heart } from 'lucide-react'
 
 import type { PostCardData } from './PostCard'
 
@@ -25,11 +26,24 @@ export function FeaturedPost({ post, authorName }: FeaturedPostProps) {
   const displayName = post.instructor?.name ?? authorName ?? null
 
   return (
-    <article className="flex h-full flex-col">
-      <Link href={href} className="group block flex-1">
+    <article className="group flex h-full flex-col">
+      <Link href={href} className="block flex-1">
         {post.cover_url && (
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
-            <Image src={post.cover_url} alt={post.cover_alt ?? post.title} fill sizes="(min-width: 1024px) 50vw, 100vw" priority className="object-cover" />
+            <Image
+              src={post.cover_url}
+              alt={post.cover_alt ?? post.title}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              priority
+              className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+            />
+            {post.likes_count > 0 && (
+              <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                <Heart className="h-3.5 w-3.5 fill-white" />
+                <span>{post.likes_count}</span>
+              </div>
+            )}
           </div>
         )}
         <h1 className="mt-4 font-serif text-xl font-bold leading-tight md:text-3xl">
