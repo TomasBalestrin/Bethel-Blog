@@ -4,10 +4,6 @@ import { FeaturedPost } from '@/components/post/FeaturedPost'
 import { PostCard, type PostCardData } from '@/components/post/PostCard'
 import { PostGrid } from '@/components/post/PostGrid'
 import { PopularSidebar, type PopularPost } from '@/components/post/PopularSidebar'
-import {
-  CategoryFilters,
-  type CategoryFiltersItem,
-} from '@/components/shared/CategoryFilters'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { createClient } from '@/lib/supabase/server'
 
@@ -15,11 +11,10 @@ export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Bethel Blog',
-  description:
-    'Insights sobre produto, sistemas e empreendedorismo por Bethel.',
+  description: 'Insights sobre produto, sistemas e empreendedorismo por Bethel.',
 }
 
-const TOP_LIMIT = 3 // 1 featured + 2 recentes compactos
+const TOP_LIMIT = 3
 const LIST_PAGE_SIZE = 10
 
 interface JoinedPost {
@@ -71,38 +66,27 @@ export default async function HomePage() {
   const postsSelect =
     'id, title, slug, excerpt, cover_url, cover_alt, published_at, reading_time, views_count, likes_count, instructor:instructors(id, name, slug, avatar_url), post_categories(category_id, categories(id, name, slug, color))'
 
-  const [profileResult, topResult, listResult, popularResult, categoriesResult] =
-    await Promise.all([
-      supabase
-        .from('profile')
-        .select('name, avatar_url')
-        .limit(1)
-        .maybeSingle<{ name: string; avatar_url: string }>(),
-      supabase
-        .from('posts')
-        .select(postsSelect)
-        .eq('status', 'published')
-        .is('deleted_at', null)
-        .order('published_at', { ascending: false })
-        .range(0, TOP_LIMIT - 1),
-      supabase
-        .from('posts')
-        .select(postsSelect, { count: 'exact' })
-        .eq('status', 'published')
-        .is('deleted_at', null)
-        .order('published_at', { ascending: false })
-        .range(0, LIST_PAGE_SIZE - 1),
-      supabase
-        .from('v_popular_posts')
-        .select('id, title, slug, cover_url')
-        .limit(5),
-      supabase
-        .from('categories')
-        .select('id, name, slug, color')
-        .order('name'),
-    ])
+  const [topResult, listResult, popularResult] = await Promise.all([
+    supabase
+      .from('posts')
+      .select(postsSelect)
+      .eq('status', 'published')
+      .is('deleted_at', null)
+      .order('published_at', { ascending: false })
+      .range(0, TOP_LIMIT - 1),
+    supabase
+      .from('posts')
+      .select(postsSelect, { count: 'exact' })
+      .eq('status', 'published')
+      .is('deleted_at', null)
+      .order('published_at', { ascending: false })
+      .range(0, LIST_PAGE_SIZE - 1),
+    supabase
+      .from('v_popular_posts')
+      .select('id, title, slug, cover_url')
+      .limit(5),
+  ])
 
-  const profile = profileResult.data
   const top = (topResult.data ?? []) as unknown as JoinedPost[]
   const listPosts = (listResult.data ?? []) as unknown as JoinedPost[]
   const listTotal = listResult.count ?? 0
@@ -117,76 +101,52 @@ export default async function HomePage() {
   const listCards = listPosts.map(toCardData)
   const totalPages = Math.max(0, Math.ceil(listTotal / LIST_PAGE_SIZE))
 
-  const categories: CategoryFiltersItem[] = (categoriesResult.data ?? []).map(
-    (c) => ({ id: c.id, name: c.name, slug: c.slug, color: c.color })
-  )
-
   const popularPosts: PopularPost[] = popularData
     .filter((p): p is PopularPost => Boolean(p.id && p.slug && p.title))
-    .map((p) => ({
-      id: p.id,
-      slug: p.slug,
-      title: p.title,
-      cover_url: p.cover_url,
-    }))
+    .map((p) => ({ id: p.id, slug: p.slug, title: p.title, cover_url: p.cover_url }))
 
   if (!featured) {
     return (
-      <div className="container py-16 text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight">
-          Bethel Blog
-        </h1>
-        <p className="mt-3 text-muted-foreground">
-          Em breve. Nenhum post publicado ainda.
-        </p>
+      <div className="container py-20 text-center">
+        <h1 className="font-serif text-3xl font-bold">Bethel Blog</h1>
+        <p className="mt-3 text-muted-foreground">Em breve.</p>
       </div>
     )
   }
 
   return (
-    <div className="container space-y-10 py-8 md:py-12">
-      {/* Hero grid */}
-      <section className="grid gap-8 lg:grid-cols-12">
-        <div className="order-2 space-y-6 lg:order-1 lg:col-span-4">
+    <div className="container space-y-12 py-10 md:py-14">
+      {/* Hero grid: 3 cols */}
+      <section className="grid gap-10 lg:grid-cols-[280px_1fr_280px]">
+        <div className="order-2 space-y-8 lg:order-1">
           {recent.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              variant="compact"
-              authorName={profile?.name}
-              authorAvatar={profile?.avatar_url}
-            />
+            <PostCard key={post.id} post={post} variant="compact" />
           ))}
         </div>
-
-        <div className="order-1 lg:order-2 lg:col-span-5">
-          <FeaturedPost
-            post={featured}
-            authorName={profile?.name}
-            authorAvatar={profile?.avatar_url}
-          />
+        <div className="order-1 lg:order-2">
+          <FeaturedPost post={featured} />
         </div>
-
-        <div className="order-3 lg:col-span-3">
+        <div className="order-3">
           <PopularSidebar posts={popularPosts} />
         </div>
       </section>
 
-      {/* Filters + Tabs */}
-      <section className="space-y-4">
-        <CategoryFilters categories={categories} />
+      {/* Divider + Tabs */}
+      <div className="border-t border-border pt-8">
         <Tabs defaultValue="recent">
-          <TabsList>
-            <TabsTrigger value="recent">Mais recentes</TabsTrigger>
-            <TabsTrigger value="top" disabled>
+          <TabsList className="bg-transparent p-0 gap-2">
+            <TabsTrigger value="recent" className="rounded-full data-[state=active]:bg-muted data-[state=active]:shadow-none">
+              Mais recentes
+            </TabsTrigger>
+            <TabsTrigger value="top" disabled className="rounded-full">
               Principais
             </TabsTrigger>
-            <TabsTrigger value="discussions" disabled>
+            <TabsTrigger value="discussions" disabled className="rounded-full">
               Discussões
             </TabsTrigger>
           </TabsList>
         </Tabs>
-      </section>
+      </div>
 
       {/* Chronological list */}
       <section>
@@ -195,8 +155,6 @@ export default async function HomePage() {
           initialPage={1}
           totalPages={totalPages}
           pageSize={LIST_PAGE_SIZE}
-          authorName={profile?.name}
-          authorAvatar={profile?.avatar_url}
         />
       </section>
     </div>

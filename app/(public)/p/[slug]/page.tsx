@@ -133,19 +133,19 @@ export default async function PostPage({ params }: PageProps) {
           authorAvatar={profileAvatar}
         />
 
-        <div className="my-8">
-          <PostActions
-            postId={post.id}
-            initialLikes={post.likes_count}
-            url={url}
-            title={post.title}
-            excerpt={post.excerpt}
+        <PostActions
+          postId={post.id}
+          initialLikes={post.likes_count}
+          url={url}
+          title={post.title}
+          excerpt={post.excerpt}
+        />
+
+        <div className="mt-10">
+          <BlockRenderer
+            content={parsedContent.success ? parsedContent.data : post.content}
           />
         </div>
-
-        <BlockRenderer
-          content={parsedContent.success ? parsedContent.data : post.content}
-        />
       </article>
 
       <script

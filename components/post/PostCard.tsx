@@ -2,10 +2,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { Eye, Heart } from 'lucide-react'
-
-import { CategoryChip } from '@/components/shared/CategoryChip'
-import { cn } from '@/lib/utils/cn'
 
 export interface PostCardData {
   id: string
@@ -34,159 +30,76 @@ interface PostCardProps {
   authorAvatar?: string | null
 }
 
-function formatDate(iso: string | null) {
-  if (!iso) return ''
-  return format(new Date(iso), "d 'de' MMM", { locale: ptBR })
+function formatMeta(date: string | null, name: string | null): string {
+  const parts: string[] = []
+  if (date) {
+    parts.push(format(new Date(date), "MMM d", { locale: ptBR }).toUpperCase())
+  }
+  if (name) parts.push(name.toUpperCase())
+  return parts.join(' · ')
 }
 
-export function PostCard({
-  post,
-  variant = 'default',
-  authorName,
-  authorAvatar,
-}: PostCardProps) {
+export function PostCard({ post, variant = 'default', authorName }: PostCardProps) {
   const href = `/p/${post.slug}`
-  const primaryCategory = post.categories?.[0]
-  // Prefere instrutor do post; fallback pro autor do blog (prop).
-  // Se nenhum dos dois, omite a linha de autor.
   const displayName = post.instructor?.name ?? authorName ?? null
-  const displayAvatar = post.instructor?.avatar_url ?? authorAvatar ?? null
 
   if (variant === 'compact') {
     return (
-      <article className="group flex gap-3">
-        {post.cover_url && (
-          <Link
-            href={href}
-            className="relative h-20 w-24 shrink-0 overflow-hidden rounded-md bg-muted"
-          >
-            <Image
-              src={post.cover_url}
-              alt={post.cover_alt ?? post.title}
-              fill
-              sizes="96px"
-              className="object-cover transition-transform group-hover:scale-105"
-            />
-          </Link>
-        )}
-        <div className="min-w-0 flex-1 space-y-1">
-          {primaryCategory && (
-            <CategoryChip
-              name={primaryCategory.name}
-              slug={primaryCategory.slug}
-              color={primaryCategory.color}
-            />
+      <article>
+        <Link href={href} className="group block">
+          {post.cover_url && (
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
+              <Image
+                src={post.cover_url}
+                alt={post.cover_alt ?? post.title}
+                fill
+                sizes="280px"
+                className="object-cover"
+              />
+            </div>
           )}
-          <Link href={href} className="block">
-            <h3 className="line-clamp-2 text-sm font-semibold leading-tight transition-colors group-hover:text-primary">
-              {post.title}
-            </h3>
-          </Link>
-          <PostMeta
-            date={post.published_at}
-            readingTime={post.reading_time}
-            views={post.views_count}
-            likes={post.likes_count}
-            dense
-          />
-        </div>
+          <h3 className="mt-3 font-serif text-lg font-bold leading-tight">
+            {post.title}
+          </h3>
+        </Link>
+        {post.excerpt && (
+          <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground">
+            {post.excerpt}
+          </p>
+        )}
+        <p className="mt-2 text-xs tracking-wider text-muted-foreground">
+          {formatMeta(post.published_at, displayName)}
+        </p>
       </article>
     )
   }
 
   return (
-    <article className="group">
-      {post.cover_url && (
-        <Link
-          href={href}
-          className={cn(
-            'relative block overflow-hidden rounded-lg bg-muted',
-            'aspect-[16/9]'
-          )}
-        >
-          <Image
-            src={post.cover_url}
-            alt={post.cover_alt ?? post.title}
-            fill
-            sizes="(min-width: 1024px) 700px, 100vw"
-            className="object-cover transition-transform group-hover:scale-105"
-          />
-        </Link>
-      )}
-      <div className="mt-3 space-y-2">
-        {primaryCategory && (
-          <CategoryChip
-            name={primaryCategory.name}
-            slug={primaryCategory.slug}
-            color={primaryCategory.color}
-          />
-        )}
-        <Link href={href}>
-          <h2 className="text-xl font-bold tracking-tight transition-colors group-hover:text-primary md:text-2xl">
-            {post.title}
-          </h2>
-        </Link>
-        {post.excerpt && (
-          <p className="line-clamp-2 text-sm text-muted-foreground">
-            {post.excerpt}
-          </p>
-        )}
-        <div className="flex items-center gap-3">
-          {displayAvatar && (
+    <article>
+      <Link href={href} className="group block">
+        {post.cover_url && (
+          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
             <Image
-              src={displayAvatar}
-              alt={displayName ?? ''}
-              width={24}
-              height={24}
-              className="h-6 w-6 rounded-full object-cover"
+              src={post.cover_url}
+              alt={post.cover_alt ?? post.title}
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover"
             />
-          )}
-          {displayName && (
-            // TODO: linkar pra /instructor/[slug] quando existir
-            <span className="text-xs font-medium">{displayName}</span>
-          )}
-          <PostMeta
-            date={post.published_at}
-            readingTime={post.reading_time}
-            views={post.views_count}
-            likes={post.likes_count}
-          />
-        </div>
-      </div>
+          </div>
+        )}
+        <h2 className="mt-4 font-serif text-xl font-bold leading-tight">
+          {post.title}
+        </h2>
+      </Link>
+      {post.excerpt && (
+        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+          {post.excerpt}
+        </p>
+      )}
+      <p className="mt-3 text-xs tracking-wider text-muted-foreground">
+        {formatMeta(post.published_at, displayName)}
+      </p>
     </article>
-  )
-}
-
-interface PostMetaProps {
-  date: string | null
-  readingTime: number | null
-  views: number
-  likes: number
-  dense?: boolean
-}
-
-function PostMeta({ date, readingTime, views, likes, dense }: PostMetaProps) {
-  return (
-    <div
-      className={cn(
-        'flex flex-wrap items-center gap-3 text-xs text-muted-foreground',
-        dense && 'gap-2'
-      )}
-    >
-      {date && <span>{formatDate(date)}</span>}
-      {readingTime && <span>· {readingTime} min de leitura</span>}
-      {views > 0 && (
-        <span className="inline-flex items-center gap-1">
-          <Eye className="h-3 w-3" />
-          {views}
-        </span>
-      )}
-      {likes > 0 && (
-        <span className="inline-flex items-center gap-1">
-          <Heart className="h-3 w-3" />
-          {likes}
-        </span>
-      )}
-    </div>
   )
 }
