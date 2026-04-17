@@ -70,7 +70,7 @@ export function PostCard({ post, variant = 'default', authorName }: PostCardProp
       <article className="group">
         <Link href={href} className="block">
           <CoverImage post={post} />
-          <h3 className="mt-3 font-serif text-base font-bold leading-tight">
+          <h3 className="mt-3 font-serif text-base font-bold leading-tight transition-colors duration-200 group-hover:text-foreground/60">
             {post.title}
           </h3>
         </Link>
@@ -88,7 +88,7 @@ export function PostCard({ post, variant = 'default', authorName }: PostCardProp
     <article className="group">
       <Link href={href} className="block">
         <CoverImage post={post} />
-        <h2 className="mt-3 font-serif text-[17px] font-bold leading-tight">
+        <h2 className="mt-3 font-serif text-[17px] font-bold leading-tight transition-colors duration-200 group-hover:text-foreground/60">
           {post.title}
         </h2>
       </Link>

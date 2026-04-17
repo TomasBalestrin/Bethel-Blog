@@ -116,17 +116,17 @@ export default async function HomePage() {
 
   return (
     <div className="container space-y-12 py-10 md:py-14">
-      {/* Hero grid: 3 cols */}
-      <section className="grid gap-10 lg:grid-cols-[280px_1fr_280px]">
-        <div className="order-2 space-y-8 lg:order-1">
+      {/* Hero grid: 3 cols with vertical dividers */}
+      <section className="grid grid-cols-1 gap-0 lg:grid-cols-[280px_1fr_280px]">
+        <div className="order-2 space-y-8 lg:order-1 lg:border-r lg:border-border lg:pr-8">
           {recent.map((post) => (
             <PostCard key={post.id} post={post} variant="compact" />
           ))}
         </div>
-        <div className="order-1 lg:order-2">
+        <div className="order-1 lg:order-2 lg:border-r lg:border-border lg:px-8">
           <FeaturedPost post={featured} />
         </div>
-        <div className="order-3">
+        <div className="order-3 lg:pl-8">
           <PopularSidebar posts={popularPosts} />
         </div>
       </section>

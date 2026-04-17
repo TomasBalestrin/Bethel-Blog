@@ -46,7 +46,7 @@ export function FeaturedPost({ post, authorName }: FeaturedPostProps) {
             )}
           </div>
         )}
-        <h1 className="mt-4 font-serif text-xl font-bold leading-tight md:text-3xl">
+        <h1 className="mt-4 font-serif text-xl font-bold leading-tight transition-colors duration-200 group-hover:text-foreground/60 md:text-3xl">
           {post.title}
         </h1>
       </Link>

@@ -5,6 +5,7 @@ import { BlockRenderer } from '@/components/post/BlockRenderer'
 import { PostActions } from '@/components/post/PostActions'
 import { PostHero, type PostHeroData } from '@/components/post/PostHero'
 import { ReadingProgress } from '@/components/post/ReadingProgress'
+import { RelatedPosts } from '@/components/post/RelatedPosts'
 import { ViewTracker } from '@/components/post/ViewTracker'
 import { buildArticleJsonLd } from '@/lib/seo/jsonld'
 import { buildPostMetadata } from '@/lib/seo/metadata'
@@ -146,6 +147,8 @@ export default async function PostPage({ params }: PageProps) {
             content={parsedContent.success ? parsedContent.data : post.content}
           />
         </div>
+
+        <RelatedPosts currentPostId={post.id} />
       </article>
 
       <script

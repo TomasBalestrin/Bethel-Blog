@@ -22,7 +22,7 @@ export function PopularSidebar({ posts }: PopularSidebarProps) {
       <div className="mt-4 space-y-4">
         {posts.map((post) => (
           <Link key={post.id} href={`/p/${post.slug}`} className="group flex items-start gap-3">
-            <p className="min-w-0 flex-1 line-clamp-2 font-serif text-sm font-bold leading-snug">
+            <p className="min-w-0 flex-1 line-clamp-2 font-serif text-sm font-bold leading-snug transition-colors duration-200 group-hover:text-foreground/60">
               {post.title}
             </p>
             {post.cover_url && (
