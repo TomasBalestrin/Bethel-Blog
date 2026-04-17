@@ -39,6 +39,13 @@ export function MobileNav({ blogTitle }: MobileNavProps) {
           >
             Início
           </Link>
+          <Link
+            href="/artigos"
+            onClick={() => setOpen(false)}
+            className="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
+          >
+            Artigos
+          </Link>
         </nav>
       </SheetContent>
     </Sheet>

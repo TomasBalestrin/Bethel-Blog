@@ -60,8 +60,11 @@ export async function PublicHeader() {
         {/* Row 2: nav */}
         <nav aria-label="Navegação principal" className="hidden md:block">
           <div className="mx-auto flex max-w-7xl justify-center gap-8 px-6 py-2.5">
-            <Link href="/" className="border-b-2 border-foreground pb-1.5 text-[13px] font-medium">
+            <Link href="/" className="pb-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">
               Início
+            </Link>
+            <Link href="/artigos" className="pb-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">
+              Artigos
             </Link>
           </div>
         </nav>
