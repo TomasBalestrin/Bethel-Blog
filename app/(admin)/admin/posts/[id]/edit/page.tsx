@@ -40,9 +40,19 @@ export default async function EditPostPage({ params }: PageProps) {
   ])
 
   if (postError) {
-    console.error('[/admin/posts/edit]', postError)
+    console.error('[/admin/posts/edit] post fetch error', {
+      id,
+      code: postError.code,
+      message: postError.message,
+      details: postError.details,
+      hint: postError.hint,
+    })
   }
   if (!post) {
+    console.warn(
+      '[/admin/posts/edit] post não encontrado — verifique se migration 0002_instructors.sql foi aplicada (coluna posts.instructor_id) e se o UUID existe em posts',
+      { id }
+    )
     notFound()
   }
 
