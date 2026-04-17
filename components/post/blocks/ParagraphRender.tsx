@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { Fragment, type ReactNode } from 'react'
 
 import type { ParagraphBlock } from '@/types/post-blocks'
 
@@ -12,8 +12,6 @@ type Token =
   | { kind: 'italic'; value: string }
   | { kind: 'link'; label: string; href: string }
 
-// Ordem importa: links primeiro (antes de bold/italic) pra evitar conflito
-// com a sintaxe de asterisco dentro de label/url.
 const INLINE_REGEX =
   /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*\n]+)\*\*|\*([^*\n]+)\*/g
 
@@ -54,9 +52,7 @@ function renderTokens(tokens: Token[]): ReactNode[] {
       case 'italic':
         return <em key={index}>{token.value}</em>
       case 'link':
-        if (!ALLOWED_PROTOCOLS.test(token.href)) {
-          return token.label
-        }
+        if (!ALLOWED_PROTOCOLS.test(token.href)) return token.label
         return (
           <a
             key={index}
@@ -72,15 +68,35 @@ function renderTokens(tokens: Token[]): ReactNode[] {
   })
 }
 
+function renderLine(line: string): ReactNode[] {
+  return renderTokens(tokenize(line))
+}
+
 export function ParagraphRender({ block }: ParagraphRenderProps) {
   const text = block.text.trim()
   if (!text) return null
 
-  const nodes = renderTokens(tokenize(text))
+  // \n\n+ = novo <p> (parágrafo); \n simples = <br /> dentro do <p>
+  const paragraphs = text.split(/\n\n+/)
 
   return (
-    <p className="my-5 font-sans text-base leading-relaxed text-foreground md:text-lg">
-      {nodes}
-    </p>
+    <div className="my-5 space-y-4">
+      {paragraphs.map((para, pi) => {
+        const lines = para.split('\n')
+        return (
+          <p
+            key={pi}
+            className="font-sans text-base leading-relaxed text-foreground md:text-lg"
+          >
+            {lines.map((line, li) => (
+              <Fragment key={li}>
+                {li > 0 && <br />}
+                {renderLine(line)}
+              </Fragment>
+            ))}
+          </p>
+        )
+      })}
+    </div>
   )
 }
