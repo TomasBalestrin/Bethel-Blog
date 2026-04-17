@@ -136,10 +136,12 @@ export default async function PostPage({ params }: PageProps) {
 
         <PostActions
           postId={post.id}
+          postSlug={post.slug}
           initialLikes={post.likes_count}
           url={url}
           title={post.title}
           excerpt={post.excerpt}
+          coverUrl={post.cover_url}
         />
 
         <div className="mt-10">

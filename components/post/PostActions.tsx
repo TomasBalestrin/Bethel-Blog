@@ -6,18 +6,22 @@ import { ShareButton } from './ShareButton'
 
 interface PostActionsProps {
   postId: string
+  postSlug: string
   initialLikes: number
   url: string
   title: string
   excerpt: string | null
+  coverUrl: string | null
 }
 
 export function PostActions({
   postId,
+  postSlug,
   initialLikes,
   url,
   title,
   excerpt,
+  coverUrl,
 }: PostActionsProps) {
   return (
     <div className="border-y border-border py-3">
@@ -28,7 +32,13 @@ export function PostActions({
       >
         <LikeButton postId={postId} initialCount={initialLikes} />
         <div className="flex-1" />
-        <ShareButton url={url} title={title} text={excerpt ?? undefined} />
+        <ShareButton
+          url={url}
+          title={title}
+          text={excerpt ?? undefined}
+          slug={postSlug}
+          coverUrl={coverUrl}
+        />
         <CopyLinkButton url={url} />
       </div>
     </div>
