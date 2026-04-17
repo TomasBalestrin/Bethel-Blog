@@ -5,6 +5,7 @@ import { BlockRenderer } from '@/components/post/BlockRenderer'
 import { PostActions } from '@/components/post/PostActions'
 import { PostHero, type PostHeroData } from '@/components/post/PostHero'
 import { ReadingProgress } from '@/components/post/ReadingProgress'
+import { RelatedPosts } from '@/components/post/RelatedPosts'
 import { ViewTracker } from '@/components/post/ViewTracker'
 import { buildArticleJsonLd } from '@/lib/seo/jsonld'
 import { buildPostMetadata } from '@/lib/seo/metadata'
@@ -133,19 +134,21 @@ export default async function PostPage({ params }: PageProps) {
           authorAvatar={profileAvatar}
         />
 
-        <div className="my-8">
-          <PostActions
-            postId={post.id}
-            initialLikes={post.likes_count}
-            url={url}
-            title={post.title}
-            excerpt={post.excerpt}
+        <PostActions
+          postId={post.id}
+          initialLikes={post.likes_count}
+          url={url}
+          title={post.title}
+          excerpt={post.excerpt}
+        />
+
+        <div className="mt-10">
+          <BlockRenderer
+            content={parsedContent.success ? parsedContent.data : post.content}
           />
         </div>
 
-        <BlockRenderer
-          content={parsedContent.success ? parsedContent.data : post.content}
-        />
+        <RelatedPosts currentPostId={post.id} />
       </article>
 
       <script

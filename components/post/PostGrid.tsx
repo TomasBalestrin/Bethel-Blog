@@ -13,8 +13,6 @@ interface PostGridProps {
   initialPage: number
   totalPages: number
   pageSize: number
-  authorName?: string
-  authorAvatar?: string | null
 }
 
 interface ApiPost {
@@ -28,7 +26,6 @@ interface ApiPost {
   reading_time: number | null
   views_count: number
   likes_count: number
-  /** Pode vir null se a API pública ainda não faz join instructor. */
   instructor?:
     | { id: string; name: string; slug: string; avatar_url: string }
     | null
@@ -62,8 +59,6 @@ export function PostGrid({
   initialPage,
   totalPages,
   pageSize,
-  authorName,
-  authorAvatar,
 }: PostGridProps) {
   const [posts, setPosts] = useState(initialPosts)
   const [page, setPage] = useState(initialPage)
@@ -91,22 +86,17 @@ export function PostGrid({
 
   if (posts.length === 0) {
     return (
-      <div className="rounded-md border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+      <div className="py-16 text-center text-sm text-muted-foreground">
         Nenhum post ainda.
       </div>
     )
   }
 
   return (
-    <div className="space-y-8">
-      <div className="grid gap-8 md:grid-cols-2">
+    <div className="space-y-10">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {posts.map((post) => (
-          <PostCard
-            key={post.id}
-            post={post}
-            authorName={authorName}
-            authorAvatar={authorAvatar}
-          />
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
 
@@ -114,6 +104,7 @@ export function PostGrid({
         <div className="flex justify-center">
           <Button
             variant="outline"
+            className="rounded-full"
             onClick={() => void loadMore()}
             disabled={loading}
           >
