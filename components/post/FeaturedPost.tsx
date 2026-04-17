@@ -29,26 +29,17 @@ export function FeaturedPost({ post, authorName }: FeaturedPostProps) {
       <Link href={href} className="group block flex-1">
         {post.cover_url && (
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
-            <Image
-              src={post.cover_url}
-              alt={post.cover_alt ?? post.title}
-              fill
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              priority
-              className="object-cover"
-            />
+            <Image src={post.cover_url} alt={post.cover_alt ?? post.title} fill sizes="(min-width: 1024px) 50vw, 100vw" priority className="object-cover" />
           </div>
         )}
-        <h1 className="mt-5 font-serif text-2xl font-bold leading-tight md:text-4xl">
+        <h1 className="mt-4 font-serif text-xl font-bold leading-tight md:text-3xl">
           {post.title}
         </h1>
       </Link>
       {post.excerpt && (
-        <p className="mt-3 line-clamp-3 text-base text-muted-foreground">
-          {post.excerpt}
-        </p>
+        <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{post.excerpt}</p>
       )}
-      <p className="mt-3 text-xs tracking-wider text-muted-foreground">
+      <p className="mt-2 text-[11px] tracking-wider text-muted-foreground">
         {formatMeta(post.published_at, displayName)}
       </p>
     </article>

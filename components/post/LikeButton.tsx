@@ -63,7 +63,7 @@ export function LikeButton({ postId, initialCount }: LikeButtonProps) {
       onClick={() => void toggle()}
       disabled={pending || !ready}
       className={cn(
-        'gap-2',
+        'gap-2 rounded-full',
         liked &&
           'border-red-400 bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-950 dark:text-red-300'
       )}

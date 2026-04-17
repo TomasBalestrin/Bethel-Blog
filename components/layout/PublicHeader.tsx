@@ -28,59 +28,46 @@ export async function PublicHeader() {
         Pular para o conteúdo
       </a>
 
-      <header className="sticky top-0 z-40 bg-background">
-        <div className="container">
-          {/* Row 1: avatar + title + icons */}
-          <div className="flex items-center gap-4 py-4">
-            <Link
-              href="/"
-              aria-label={`Ir para a home de ${blogTitle}`}
-              className="shrink-0"
-            >
-              {avatarUrl ? (
-                <Image
-                  src={avatarUrl}
-                  alt={authorName}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-xl object-cover"
-                  priority
-                />
-              ) : (
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted text-sm font-semibold text-muted-foreground">
-                  {authorName.charAt(0).toUpperCase()}
-                </div>
-              )}
-            </Link>
-
-            <div className="flex-1 text-center">
-              <Link href="/" className="font-serif text-2xl font-normal tracking-tight md:text-[28px]">
-                {blogTitle}
-              </Link>
-            </div>
-
-            <div className="flex shrink-0 items-center gap-4">
-              <SearchBar />
-              <ThemeToggle />
-              <div className="md:hidden">
-                <MobileNav blogTitle={blogTitle} />
+      <header className="sticky top-0 z-40 w-full bg-background">
+        {/* Row 1 */}
+        <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-3">
+          <Link href="/" aria-label={`Ir para a home de ${blogTitle}`} className="shrink-0">
+            {avatarUrl ? (
+              <Image src={avatarUrl} alt={authorName} width={36} height={36} className="h-9 w-9 rounded-xl object-cover" priority />
+            ) : (
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-muted text-xs font-semibold text-muted-foreground">
+                {authorName.charAt(0).toUpperCase()}
               </div>
+            )}
+          </Link>
+          <div className="flex-1 text-center">
+            <Link href="/" className="font-serif text-xl font-normal tracking-tight md:text-2xl">
+              {blogTitle}
+            </Link>
+          </div>
+          <div className="flex shrink-0 items-center gap-4">
+            <SearchBar />
+            <ThemeToggle />
+            <div className="md:hidden">
+              <MobileNav blogTitle={blogTitle} />
             </div>
           </div>
-
-          {/* Row 2: nav tabs */}
-          <nav aria-label="Navegação principal" className="hidden border-t border-border md:flex md:justify-center md:gap-8 md:py-3">
-            <Link
-              href="/"
-              className="border-b-2 border-foreground pb-2 text-sm font-medium"
-            >
-              Início
-            </Link>
-          </nav>
         </div>
 
-        {/* Bottom separator */}
-        <div className="border-b border-border" />
+        {/* Full-width separator */}
+        <div className="border-t border-border" />
+
+        {/* Row 2: nav */}
+        <nav aria-label="Navegação principal" className="hidden md:block">
+          <div className="mx-auto flex max-w-7xl justify-center gap-8 px-6 py-2.5">
+            <Link href="/" className="border-b-2 border-foreground pb-1.5 text-[13px] font-medium">
+              Início
+            </Link>
+          </div>
+        </nav>
+
+        {/* Full-width bottom separator */}
+        <div className="border-t border-border" />
       </header>
     </>
   )

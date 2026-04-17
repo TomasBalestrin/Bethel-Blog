@@ -29,6 +29,7 @@ export function CopyLinkButton({ url }: CopyLinkButtonProps) {
       type="button"
       variant="outline"
       size="sm"
+      className="rounded-full"
       onClick={() => void handleCopy()}
       aria-label="Copiar link"
     >

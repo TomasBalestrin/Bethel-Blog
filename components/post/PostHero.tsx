@@ -37,42 +37,33 @@ export function PostHero({ post, authorName, authorAvatar }: PostHeroProps) {
     : ''
 
   return (
-    <header className="space-y-6">
+    <header className="space-y-5">
       {post.categories.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {post.categories.map((c) => (
-            <CategoryChip key={c.id} name={c.name} slug={c.slug} color={c.color} size="md" />
+            <CategoryChip key={c.id} name={c.name} slug={c.slug} color={c.color} size="sm" />
           ))}
         </div>
       )}
 
-      <h1 className="font-serif text-4xl font-bold leading-[1.15] md:text-5xl">
+      <h1 className="font-serif text-3xl font-bold leading-[1.15] md:text-4xl">
         {post.title}
       </h1>
 
       {post.excerpt && (
-        <p className="text-xl text-muted-foreground">{post.excerpt}</p>
+        <p className="text-lg text-muted-foreground">{post.excerpt}</p>
       )}
 
       <div className="flex items-center gap-3">
         {displayAvatar && (
-          <Image
-            src={displayAvatar}
-            alt={displayName ?? ''}
-            width={48}
-            height={48}
-            className="h-12 w-12 rounded-full object-cover"
-          />
+          <Image src={displayAvatar} alt={displayName ?? ''} width={40} height={40} className="h-10 w-10 rounded-full object-cover" />
         )}
         <div>
-          {/* TODO: linkar pra /instructor/[slug] quando existir */}
           {displayName && (
-            <p className="text-[13px] font-bold uppercase tracking-wider">
-              {displayName}
-            </p>
+            <p className="text-xs font-bold uppercase tracking-wider">{displayName}</p>
           )}
           {dateLabel && (
-            <p className="text-[13px] text-muted-foreground">{dateLabel}</p>
+            <p className="text-xs text-muted-foreground">{dateLabel}</p>
           )}
         </div>
       </div>

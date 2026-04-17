@@ -49,25 +49,17 @@ export function PostCard({ post, variant = 'default', authorName }: PostCardProp
         <Link href={href} className="group block">
           {post.cover_url && (
             <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
-              <Image
-                src={post.cover_url}
-                alt={post.cover_alt ?? post.title}
-                fill
-                sizes="280px"
-                className="object-cover"
-              />
+              <Image src={post.cover_url} alt={post.cover_alt ?? post.title} fill sizes="280px" className="object-cover" />
             </div>
           )}
-          <h3 className="mt-3 font-serif text-lg font-bold leading-tight">
+          <h3 className="mt-3 font-serif text-base font-bold leading-tight">
             {post.title}
           </h3>
         </Link>
         {post.excerpt && (
-          <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground">
-            {post.excerpt}
-          </p>
+          <p className="mt-1 line-clamp-2 text-[13px] text-muted-foreground">{post.excerpt}</p>
         )}
-        <p className="mt-2 text-xs tracking-wider text-muted-foreground">
+        <p className="mt-2 text-[11px] tracking-wider text-muted-foreground">
           {formatMeta(post.published_at, displayName)}
         </p>
       </article>
@@ -79,25 +71,17 @@ export function PostCard({ post, variant = 'default', authorName }: PostCardProp
       <Link href={href} className="group block">
         {post.cover_url && (
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
-            <Image
-              src={post.cover_url}
-              alt={post.cover_alt ?? post.title}
-              fill
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover"
-            />
+            <Image src={post.cover_url} alt={post.cover_alt ?? post.title} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
           </div>
         )}
-        <h2 className="mt-4 font-serif text-xl font-bold leading-tight">
+        <h2 className="mt-3 font-serif text-[17px] font-bold leading-tight">
           {post.title}
         </h2>
       </Link>
       {post.excerpt && (
-        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-          {post.excerpt}
-        </p>
+        <p className="mt-1.5 line-clamp-2 text-[13px] text-muted-foreground">{post.excerpt}</p>
       )}
-      <p className="mt-3 text-xs tracking-wider text-muted-foreground">
+      <p className="mt-2 text-[11px] tracking-wider text-muted-foreground">
         {formatMeta(post.published_at, displayName)}
       </p>
     </article>

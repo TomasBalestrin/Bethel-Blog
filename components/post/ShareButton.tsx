@@ -19,6 +19,7 @@ export function ShareButton({ url, title, text }: ShareButtonProps) {
       type="button"
       variant="outline"
       size="sm"
+      className="rounded-full"
       onClick={() => void share({ url, title, text })}
       aria-label="Compartilhar post"
     >

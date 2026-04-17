@@ -93,12 +93,10 @@ export function PostGrid({
   }
 
   return (
-    <div className="space-y-8">
-      <div className="divide-y divide-border">
+    <div className="space-y-10">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {posts.map((post) => (
-          <div key={post.id} className="py-6 first:pt-0">
-            <PostCard post={post} />
-          </div>
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
 
